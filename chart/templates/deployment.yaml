@@ -5,7 +5,6 @@ metadata:
   labels:
     {{- include "notifo.labels" . | nindent 4 }}
 spec:
-  replicas: 1
   selector:
     matchLabels:
       {{- include "notifo.selectorLabels" . | nindent 6 }}
@@ -39,14 +38,9 @@ spec:
             - name: ASPNETCORE_URLS
               value: {{ .Values.aspNetCoreUrls }}
           ports:
-            - name: grpc
+            - name: http
               containerPort: {{ .Values.service.port }}
               protocol: TCP
-            {{- if .Values.prometheus.enabled }}
-            - name: prometheus
-              containerPort: {{ .Values.prometheus.port }}
-              protocol: TCP
-            {{- end }}
           livenessProbe:
             httpGet:
               path: /healthz
