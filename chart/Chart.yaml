@@ -2,8 +2,8 @@ apiVersion: v2
 name: notifo
 description: Deploys the notifo application.
 type: application
-version: 1.0.0-alpha.50
-appVersion: "1.1.28"
+version: 1.0.0
+appVersion: "1.0.0"
 
 dependencies:
   - name: mongodb
