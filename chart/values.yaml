@@ -57,6 +57,122 @@ mongodb:
     size: 1Gi
 rabbitmq:
   enabled: true
-mongoUri: mongodb://root:root@notifo-mongodb:27017
-baseUrl: 'http://localhost:5000'
+  auth:
+    username: root
+    password: root
+    erlangCookie: 'secretcookie'
+storage:
+  mountPath: /notifo
+  size: 1Gi
+  resize: # resize works with https://github.com/topolvm/pvc-autoresizer
+    limit: 5Gi
+    threshold: '20%'
+    increase: 1Gi
 aspNetCoreUrls: 'http://+:5000'
+appSettings:
+  logging:
+    logLevel:
+      default: Information
+      Microsoft: Warning
+      Microsoft.AspNetCore.Hosting.Diagnostics: Information
+      Microsoft.Hosting.Lifetime: Information
+    human: false
+    stackdriver:
+      enabled: false
+    otlp:
+      enabled: false
+      endpoint: ''
+    applicationInsights:
+      enabled: false
+      connectionString: InstrumentationKey=[key];IngestionEndpoint=https://[datacenter].in.applicationinsights.azure.com/
+  diagnostics:
+    dumpTool: ''
+    dumpTriggerInMB: 0
+    gcdumpTool: ''
+    gcumpTriggerInMB: 0
+    gc:
+      threshold: 8192
+  urls:
+    baseUrl: http://localhost:5000
+    callbackUrl: ''
+  allowedHosts: "*"
+  clustering:
+    type: None
+    redis:
+      connectionString: localhost
+  storage:
+    type: MongoDB
+    mongoDB:
+      connectionString: mongodb://root:root@notifo-mongodb:27017
+      databaseName: Notifications
+  messaging:
+    type: RabbitMq
+    rabbitMq:
+      uri: amqp://root:root@notifo-rabbitmq/
+    kafka:
+      bootstrapServers: notifo-kafka:9092
+      groupId: service
+      saslUsername: ''
+      saslPassword: ''
+      saslMechanism: Plain
+      securityProtocol: SaslSsl
+    googlePubSub:
+      projectId: ''
+      prefix: test-notifo-
+  assetStore:
+    type: Folder
+    folder:
+      path: /notifo/assets # path starts with the storage.mountPath so that it's on the volume
+    googleCloud:
+      bucket: notifo-assets
+    azureBlob:
+      containerName: notifo-assets
+      connectionString: UseDevelopmentStorage=true
+    amazonS3:
+      serviceUrl: ''
+      bucket: notifo-assets
+      bucketFolder: notifo-assets
+      regionName: eu-central-1
+      accessKey: "<MY_KEY>"
+      secretKey: "<MY_SECRET>"
+      forcePathStyle: false
+    mongoDb:
+      bucket: fs
+    ftp:
+      serverHost: ''
+      serverPort: '21'
+      username: ''
+      password: ''
+      path: assets
+  web:
+    signalR:
+      enabled: true
+      sticky: false
+      pollingInterval: 5000
+  webPush:
+    # you can generate your own keys using a myriad of tools, one such tool is https://www.stephane-quantin.com/en/tools/generators/vapid-keys
+    subject: http://localhost:5000
+    vapidPublicKey: BCzeOPWcSKdtORUVxomrGP6XJcn8sOFH0LJUDyf4EZO1-manb0hUMJZMvebNsqk9e1AmjWFlqSjRpsFgphTr_dI
+    vapidPrivateKey: AXvur3AgS-aSE7jCtAfMKgXTYG8ZmO99b2oNXskCk7I
+  sms:
+    messageBird:
+      phoneNumber: ''
+      accessKey: ''
+  email:
+    amazonSES:
+      host: ''
+      username: ''
+      password: ''
+      awsAccessKeyId: ''
+      awsSecretAccessKey: ''
+  identity:
+    allowPasswordAuth: true
+    adminClientId: ''
+    adminClientSecret: ''
+    githubClient: ''
+    githubSecret: ''
+    googleClient: ''
+    googleSecret: ''
+    users: # admin users to generate, this will prevent the app setup screen from appearing. Passwords must have one upper, one lower, one number, one symbol, and be at least 6 characters
+      - email: admin@admin.com
+        password: 'Abcd1!'
