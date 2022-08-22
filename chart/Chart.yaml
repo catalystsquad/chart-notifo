@@ -1,0 +1,20 @@
+apiVersion: v2
+name: notifo
+description: Deploys the notifo application.
+type: application
+version: 1.0.0-alpha.50
+appVersion: "1.1.28"
+
+dependencies:
+  - name: mongodb
+    version: 13.0.1
+    repository: https://charts.bitnami.com/bitnami
+    condition: mongodb.enabled
+  - name: rabbitmq
+    version: 10.2.1
+    repository: https://charts.bitnami.com/bitnami
+    condition: rabbitmq.enabled
+  - name: cert-manager
+    version: 1.9.1
+    repository: https://charts.jetstack.io
+    condition: cert-manager.enabled

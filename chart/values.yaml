@@ -1,0 +1,148 @@
+image:
+  repository: squidex/notifo
+  tag: 1
+  pullPolicy: IfNotPresent
+
+linkerd:
+  inject: true
+
+sentry:
+  enabled: false
+  debug: false
+  environment: local
+  sampleRate: 1.0
+  tracesSampleRate: 1.0
+  dsn: ''
+  clientOptions: {}
+  additionalTags: []
+
+prometheus:
+  enabled: false
+  path: "/metrics"
+  port: 9090
+  latencyHistogramsEnabled: true
+  serviceMonitor:
+    interval: 15s
+    scrapeTimeout: 10s
+    relabelings: []
+serviceMonitor:
+  enabled: false
+  namespaceSelector: {}
+  annotations: {}
+  labels: {}
+  interval: null
+  scrapeTimeout: null
+  relabelings: []
+imagePullSecrets: []
+salesforce:
+  sync:
+    enabled: false
+  apiVersion: "55.0"
+  grantType: "password"
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+podAnnotations: {}
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+service:
+  type: ClusterIP
+  port: 5000
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 100Mi
+
+autoscaling:
+  minReplicas: 1
+  maxReplicas: 1
+  targetCPUUtilizationPercentage: 70
+  # targetMemoryUtilizationPercentage: 70
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+cockroachdb:
+  enabled: false
+  init:
+    jobAnnotations:
+      "argocd.argoproj.io/hook": Sync
+
+objects:
+  store:
+    type: memory
+    s3: {}
+  http:
+    api:
+      enabled: true
+      port: 6001
+      path: /object
+      requestTimeout: 30s
+      tlsSecretName: cert-manager/wildcard-certificate
+      httpProxy:
+        enabled: false
+  cache:
+    enabled: false
+    shards: '1024'
+    lifeWindow: 10m
+    cleanWindow: 5m
+    maxEntrySizeBytes: '0'
+    maxEntries: '0'
+    hardMaxSizeMb: '1000'
+sql:
+  logger:
+    slowSqlSeconds: 1
+    level: error
+    ignoreRecordNotFound: true
+    colorfulLogs: true
+search:
+  enabled: false
+typesense:
+  enabled: false
+  baseUrl: http://typesense.typesense:80
+  apiKey: test
+  connectionTimeout: 10s
+  circuitBreakerMaxRequests: 50
+  circuitBreakerInterval: 2m
+  circuitBreakerTimeout: 1m
+  extraEnv:
+    - name: TYPESENSE_API_KEY
+      value: test
+  image:
+    tag: 0.23.1
+mongodb:
+  enabled: true
+  architecture: "standalone"
+  auth:
+    rootUser: root
+    rootPassword: root
+  persistence:
+    size: 10Gi
+rabbitmq:
+  enabled: true
+cert-manager:
+  enabled: true
+  installCRDs: true
+mongoUri: mongodb://root:root@notifo-mongodb:27017
+baseUrl: 'http://localhost:5000'
+aspNetCoreUrls: 'http://+:5000'
