@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "notifo.fullname" . }}
+  labels:
+    {{- include "notifo.labels" . | nindent 4 }}
+data:
+  appsettings.json: |
+    {{ .Values.appSettings | toJson }}

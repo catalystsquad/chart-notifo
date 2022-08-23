@@ -31,10 +31,6 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
-            - name: URLS__BASEURL
-              value: {{ .Values.baseUrl }}
-            - name: STORAGE__MONGODB__CONNECTIONSTRING
-              value: {{ .Values.mongoUri }}
             - name: ASPNETCORE_URLS
               value: {{ .Values.aspNetCoreUrls }}
           ports:
@@ -51,6 +47,20 @@ spec:
               port: {{ .Values.service.port }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            - mountPath: {{ .Values.storage.mountPath }}
+              name: {{ include "notifo.fullname" . }}
+            - name: appsettings
+              mountPath: /app/appsettings.json
+              subPath: appsettings.json
+              readOnly: true
+      volumes:
+        - configMap:
+            name: {{ include "notifo.fullname" . }}
+          name: appsettings
+        - name: {{ include "notifo.fullname" . }}
+          persistentVolumeClaim:
+            claimName: {{ include "notifo.fullname" . }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
