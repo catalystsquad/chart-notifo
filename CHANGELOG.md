@@ -1,3 +1,10 @@
+# [1.0.0-alpha.3](https://github.com/catalystsquad/chart-notifo/compare/v1.0.0-alpha.2...v1.0.0-alpha.3) (2023-03-07)
+
+
+### Bug Fixes
+
+* support autoscaling/v2 api version for hpa ([#4](https://github.com/catalystsquad/chart-notifo/issues/4)) ([3e13faf](https://github.com/catalystsquad/chart-notifo/commit/3e13faf1049a4d540e714546c9b169ededb19dca))
+
 # [1.0.0-alpha.2](https://github.com/catalystsquad/chart-notifo/compare/v1.0.0-alpha.1...v1.0.0-alpha.2) (2022-08-23)
 
 

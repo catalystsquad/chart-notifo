@@ -2,7 +2,7 @@ apiVersion: v2
 name: notifo
 description: Deploys the notifo application.
 type: application
-version: 1.0.0-alpha.2
+version: 1.0.0-alpha.3
 appVersion: "1.0.0"
 
 dependencies:
